@@ -11,7 +11,7 @@ const MealItem = ({ name, description, price, id }) => {
         <p className={style.price}>{`$${price}`}</p>
       </div>
       <div>
-        <MealItemForm />
+        <MealItemForm id={id}/>
       </div>
     </li>
   );
