@@ -4,13 +4,15 @@ import MealItemForm from "./MealItemForm/MealItemForm";
 
 const MealItem = ({ name, description, price, id }) => {
   return (
-    <li>
-      <div className={style.meal}>
+    <li className={style.meal}>
+      <div>
         <h3>{name}</h3>
         <p className={style.description}>{description}</p>
         <p className={style.price}>{`$${price}`}</p>
       </div>
-      <MealItemForm />
+      <div>
+        <MealItemForm />
+      </div>
     </li>
   );
 };
