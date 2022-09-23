@@ -8,7 +8,7 @@ const Cart = () => {
   );
 
   return (
-    <Modal elementId="overlay-root">
+    <Modal>
       <ul className={style["cart-items"]}>{cartItems}</ul>
       <div>
         <span>Total Amount: </span>

@@ -3,26 +3,24 @@ import ReactDOM from "react-dom";
 import style from "./modal.module.css";
 
 const Backdrop = () => {
-  return ReactDOM.createPortal(
-    <div className={style.backdrop}></div>,
-    document.getElementById("backdrop-root")
-  );
+  return <div className={style.backdrop}></div>;
 };
 
 const ModalOverlay = ({ children }) => {
-  return ReactDOM.createPortal(
+  return (
     <div className={style.modal}>
       <div className={style.content}>{children}</div>
-    </div>,
-    document.getElementById("overlay-root")
+    </div>
   );
 };
 
-const Modal = ({ children, elementId }) => {
+const overlays = document.getElementById("overlays");
+
+const Modal = ({ children }) => {
   return (
     <>
-      <Backdrop />
-      <ModalOverlay>{children}</ModalOverlay>
+      {ReactDOM.createPortal(<Backdrop />, overlays)}
+      {ReactDOM.createPortal(<ModalOverlay>{children}</ModalOverlay>, overlays)}
     </>
   );
 };
