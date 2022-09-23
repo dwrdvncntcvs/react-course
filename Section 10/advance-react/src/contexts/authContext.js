@@ -11,7 +11,7 @@ const AuthProvider = ({ children }) => {
     const isAuthenticated = localStorage.getItem("isAuthenticated");
 
     if (isAuthenticated) setState((prev) => ({ ...state, isLoggedIn: true }));
-  }, []);
+  }, [state]);
 
   const loginHandler = (email, password) => {
     // We should of course check email and password
