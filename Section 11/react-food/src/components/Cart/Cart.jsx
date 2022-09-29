@@ -5,11 +5,16 @@ import style from "./cart.module.css";
 import CartItem from "./CartItem/CartItem";
 
 const Cart = ({ onHideCart }) => {
-  const { items, totalAmount } = useCartContext();
+  const { items, totalAmount, addItem, removeItem } = useCartContext();
 
-  const cartItemRemove = (id) => {};
+  const cartItemRemove = (id) => {
+    console.log(id)
+    removeItem(id);
+  };
 
-  const addCartItem = (item) => {};
+  const addCartItem = (item) => {
+    addItem(item);
+  };
 
   const cartItems = items.map(({ id, name, amount, price }) => (
     <CartItem
@@ -18,7 +23,7 @@ const Cart = ({ onHideCart }) => {
       name={name}
       price={price}
       onRemove={cartItemRemove.bind(null, id)}
-      onAdd={addCartItem.bind(null, id)}
+      onAdd={addCartItem.bind(null, { id, name, amount, price })}
     />
   ));
 

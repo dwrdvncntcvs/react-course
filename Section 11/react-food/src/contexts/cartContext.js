@@ -16,7 +16,7 @@ const cartReducer = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case "addToCart":
+    case "addToCart": {
       const existingItemIndex = state.items.findIndex(
         (stateItem) => stateItem.id === payload.id
       );
@@ -27,7 +27,7 @@ const cartReducer = (state, action) => {
       if (existingItem) {
         const updatedItem = {
           ...existingItem,
-          amount: existingItem.amount + payload.amount,
+          amount: existingItem.amount + 1,
         };
         updatedItems = [...state.items];
         updatedItems[existingItemIndex] = updatedItem;
@@ -36,13 +36,39 @@ const cartReducer = (state, action) => {
         updatedItems = state.items.concat(payload);
       }
 
+      console.log(payload.amount);
+
       return {
         ...state,
         items: updatedItems,
-        totalAmount: state.totalAmount + payload.price * payload.amount,
+        totalAmount: state.totalAmount + payload.price,
       };
-    case "removeFromCart":
-      return { ...state, items: [...state.items] };
+    }
+    case "removeFromCart": {
+      const existingItemIndex = state.items.findIndex(
+        (item) => item.id === payload
+      );
+
+      const existingItem = state.items[existingItemIndex];
+
+      let updatedItems;
+      if (existingItem.amount === 1) {
+        updatedItems = state.items.filter((item) => item.id !== payload);
+      } else {
+        const updatedItem = {
+          ...existingItem,
+          amount: existingItem.amount - 1,
+        };
+        updatedItems = [...state.items];
+        updatedItems[existingItemIndex] = updatedItem;
+      }
+
+      return {
+        ...state,
+        items: updatedItems,
+        totalAmount: state.totalAmount - existingItem.price,
+      };
+    }
     default:
       return state;
   }
@@ -64,7 +90,7 @@ const CartProvider = ({ children }) => {
   const value = {
     ...state,
     addItem: addToCart,
-    removeCartItem: removeCartItem,
+    removeItem: removeCartItem,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
