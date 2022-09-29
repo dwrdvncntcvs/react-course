@@ -17,11 +17,29 @@ const cartReducer = (state, action) => {
 
   switch (type) {
     case "addToCart":
+      const existingItemIndex = state.items.findIndex(
+        (stateItem) => stateItem.id === payload.id
+      );
+
+      const existingItem = state.items[existingItemIndex];
+      let updatedItems = state.items;
+
+      if (existingItem) {
+        const updatedItem = {
+          ...existingItem,
+          amount: existingItem.amount + payload.amount,
+        };
+        updatedItems = [...state.items];
+        updatedItems[existingItemIndex] = updatedItem;
+      } else {
+        console.log("Concatenate");
+        updatedItems = state.items.concat(payload);
+      }
+
       return {
         ...state,
-        items: state.items.concat(payload.item),
-        totalAmount:
-          state.totalAmount + payload.item.price * payload.item.amount,
+        items: updatedItems,
+        totalAmount: state.totalAmount + payload.price * payload.amount,
       };
     case "removeFromCart":
       return { ...state, items: [...state.items] };
@@ -36,7 +54,7 @@ const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, defaultCartState);
 
   const addToCart = (item) => {
-    dispatch({ type: "addToCart", payload: { item } });
+    dispatch({ type: "addToCart", payload: item });
   };
 
   const removeCartItem = (id) => {
