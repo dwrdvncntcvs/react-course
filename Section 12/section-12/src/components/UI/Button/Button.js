@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { memo } from "react";
 
-import classes from './Button.module.css';
+import classes from "./Button.module.css";
 
 const Button = (props) => {
+  console.log("Button Running");
+
   return (
     <button
-      type={props.type || 'button'}
+      type={props.type || "button"}
       className={`${classes.button} ${props.className}`}
       onClick={props.onClick}
       disabled={props.disabled}
@@ -15,4 +17,4 @@ const Button = (props) => {
   );
 };
 
-export default Button;
+export default memo(Button);
