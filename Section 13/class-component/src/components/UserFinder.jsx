@@ -2,6 +2,7 @@ import { Component } from "react";
 import UsersContext from "../store/users-content";
 import style from "./userFinder.module.css";
 
+import ErrorBoundary from "./ErrorBoundary";
 import Users from "./Users";
 
 class UserFinder extends Component {
@@ -46,7 +47,9 @@ class UserFinder extends Component {
         <div className={style.finder}>
           <input type="search" onChange={this.searchChangeHandler} />
         </div>
-        <Users users={this.state.filteredUsers} />
+        <ErrorBoundary>
+          <Users users={this.state.filteredUsers} />
+        </ErrorBoundary>
       </>
     );
   }
