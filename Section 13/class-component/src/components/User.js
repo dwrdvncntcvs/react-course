@@ -3,7 +3,14 @@ import { Component } from "react";
 
 class User extends Component {
   render() {
-    return <li className={classes.user}>{this.props.name}</li>;
+    let { num } = this.props;
+    num += 5;
+
+    return (
+      <li className={classes.user}>
+        {this.props.name} {num}
+      </li>
+    );
   }
 }
 
