@@ -1,17 +1,23 @@
-import { useState } from "react";
+import useInput from "../hooks/useInput";
 
 const SimpleInput = (props) => {
-  const [name, setName] = useState("");
-  const [nameTouched, setNameTouched] = useState(false);
+  const {
+    name,
+    nameReset,
+    nameChangeHandler,
+    nameBlurHandler,
+    nameIsValid,
+    nameIsNotValid,
+  } = useInput("name", (name) => name.length > 0);
 
-  const [email, setEmail] = useState("");
-  const [emailTouched, setEmailTouched] = useState(false);
-
-  const nameIsValid = name.length > 0;
-  const nameIsNotValid = !nameIsValid && nameTouched;
-
-  const emailIsValid = email.length > 0 && email.includes("@");
-  const emailIsNotValid = !emailIsValid && emailTouched;
+  const {
+    email,
+    emailReset,
+    emailChangeHandler,
+    emailBlurHandler,
+    emailIsValid,
+    emailIsNotValid,
+  } = useInput("email", (email) => email.length > 0 && email.includes("@"));
 
   const inputFields = [
     {
@@ -20,12 +26,8 @@ const SimpleInput = (props) => {
       label: "Your name",
       value: name,
       isValid: !nameIsNotValid,
-      change: (e) => {
-        setName(e.target.value);
-      },
-      blur: (e) => {
-        setNameTouched(true);
-      },
+      change: nameChangeHandler,
+      blur: nameBlurHandler,
       errorMessage: "Name must not be empty",
     },
     {
@@ -34,12 +36,8 @@ const SimpleInput = (props) => {
       label: "Your email",
       value: email,
       isValid: !emailIsNotValid,
-      change: (e) => {
-        setEmail(e.target.value);
-      },
-      blur: (e) => {
-        setEmailTouched(true);
-      },
+      change: emailChangeHandler,
+      blur: emailBlurHandler,
       errorMessage: "Invalid email address",
     },
   ];
@@ -52,15 +50,15 @@ const SimpleInput = (props) => {
   const submitFormAction = (e) => {
     e.preventDefault();
 
-    setNameTouched(true);
-    setEmailTouched(true);
+    nameReset(true);
+    emailReset(true);
 
     if (!nameIsValid && !emailIsValid) return;
 
     const data = { name, email };
     console.log("Data: ", JSON.stringify(data));
-    setNameTouched(false);
-    setEmailTouched(false);
+    nameReset(false);
+    emailReset(false);
   };
 
   return (
