@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useCartContext } from "../../hooks/cartHooks";
+import useHttp from "../../hooks/useHttp";
+import { BASE_URL } from "../../utils/variables";
 import { Modal } from "../UI";
 import style from "./cart.module.css";
 import CartItem from "./CartItem/CartItem";
@@ -8,6 +10,7 @@ import CheckOut from "./CheckOut/CheckOut";
 const Cart = ({ onHideCart }) => {
   const [isCheckout, setIsCheckout] = useState(false);
   const { items, totalAmount, addItem, removeItem } = useCartContext();
+  const { loading, request, error } = useHttp();
 
   const cartItemRemove = (id) => {
     console.log(id);
@@ -20,6 +23,20 @@ const Cart = ({ onHideCart }) => {
 
   const checkOut = () => {
     setIsCheckout(true);
+  };
+
+  const submitOrders = (userData) => {
+    const body = {
+      user: userData,
+      orderedItems: items,
+    };
+
+    console.log(body);
+
+    request(`${BASE_URL}/orders.json`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
   };
 
   const cartItems = items.map(({ id, name, amount, price }) => (
@@ -53,7 +70,11 @@ const Cart = ({ onHideCart }) => {
         <span>Total Amount: </span>
         <span>{totalAmount.toFixed(2)}</span>
       </div>
-      {isCheckout ? <CheckOut onClose={onHideCart} /> : actionsBtn}
+      {isCheckout ? (
+        <CheckOut onConfirm={submitOrders} onClose={onHideCart} />
+      ) : (
+        actionsBtn
+      )}
     </Modal>
   );
 };

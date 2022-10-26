@@ -17,7 +17,9 @@ const useHttp = () => {
     }
 
     const responseData = await response.json();
-    setter(responseData);
+
+    if (setter !== undefined) setter(responseData);
+
     setLoading(false);
   }, []);
 

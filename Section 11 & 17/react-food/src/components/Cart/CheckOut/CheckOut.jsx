@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import style from "./checkOut.module.css";
 import { useRef } from "react";
 
-export default function CheckOut({ onClose }) {
+export default function CheckOut({ onClose, onConfirm }) {
   const [inputValidity, setInputValidity] = useState({
     name: true,
     street: true,
@@ -94,6 +94,8 @@ export default function CheckOut({ onClose }) {
     if (!isFormValid) {
       return;
     }
+
+    onConfirm(data);
   };
 
   return (
@@ -107,7 +109,7 @@ export default function CheckOut({ onClose }) {
           <input type={type} id={id} ref={ref} />
           {!isValid && <p>{errorMessage}</p>}
         </div>
-      ))}   
+      ))}
       <div className={`${style.actions}`}>
         <button type="button" onClick={onClose}>
           Cancel
