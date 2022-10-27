@@ -8,6 +8,7 @@ import CartItem from "./CartItem/CartItem";
 import CheckOut from "./CheckOut/CheckOut";
 
 const Cart = ({ onHideCart }) => {
+  const { clearCart } = useCartContext();
   const [isCheckout, setIsCheckout] = useState(false);
   const { items, totalAmount, addItem, removeItem } = useCartContext();
   const { loading, request, error } = useHttp();
@@ -39,9 +40,12 @@ const Cart = ({ onHideCart }) => {
       body: JSON.stringify(body),
     });
 
-    if (data.ok) {
-      setDidSubmit(true);
+    if (!data.ok) {
+      return;
     }
+
+    setDidSubmit(true);
+    clearCart();
   };
 
   const cartItems = items.map(({ id, name, amount, price }) => (
