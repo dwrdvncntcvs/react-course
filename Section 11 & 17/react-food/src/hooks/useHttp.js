@@ -21,6 +21,8 @@ const useHttp = () => {
     if (setter !== undefined) setter(responseData);
 
     setLoading(false);
+
+    return response;
   }, []);
 
   return { request, loading, error };

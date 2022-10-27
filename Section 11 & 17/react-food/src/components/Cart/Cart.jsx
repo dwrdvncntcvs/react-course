@@ -11,6 +11,7 @@ const Cart = ({ onHideCart }) => {
   const [isCheckout, setIsCheckout] = useState(false);
   const { items, totalAmount, addItem, removeItem } = useCartContext();
   const { loading, request, error } = useHttp();
+  const [didSubmit, setDidSubmit] = useState(false);
 
   const cartItemRemove = (id) => {
     console.log(id);
@@ -25,7 +26,7 @@ const Cart = ({ onHideCart }) => {
     setIsCheckout(true);
   };
 
-  const submitOrders = (userData) => {
+  const submitOrders = async (userData) => {
     const body = {
       user: userData,
       orderedItems: items,
@@ -33,10 +34,14 @@ const Cart = ({ onHideCart }) => {
 
     console.log(body);
 
-    request(`${BASE_URL}/orders.json`, {
+    const data = await request(`${BASE_URL}/orders.json`, {
       method: "POST",
       body: JSON.stringify(body),
     });
+
+    if (data.ok) {
+      setDidSubmit(true);
+    }
   };
 
   const cartItems = items.map(({ id, name, amount, price }) => (
@@ -65,16 +70,32 @@ const Cart = ({ onHideCart }) => {
 
   return (
     <Modal onClose={onHideCart}>
-      <ul className={style["cart-items"]}>{cartItems}</ul>
-      <div className={style.total}>
-        <span>Total Amount: </span>
-        <span>{totalAmount.toFixed(2)}</span>
-      </div>
-      {isCheckout ? (
-        <CheckOut onConfirm={submitOrders} onClose={onHideCart} />
-      ) : (
-        actionsBtn
+      {loading && <p>Loading...</p>}
+      {!loading && !didSubmit && (
+        <>
+          <ul className={style["cart-items"]}>{cartItems}</ul>
+          <div className={style.total}>
+            <span>Total Amount: </span>
+            <span>{totalAmount.toFixed(2)}</span>
+          </div>
+          {isCheckout ? (
+            <CheckOut onConfirm={submitOrders} onClose={onHideCart} />
+          ) : (
+            actionsBtn
+          )}
+        </>
       )}
+      {didSubmit && !loading && (
+        <>
+          <p>Order submitted...</p>
+          <div className={style.actions}>
+            <button className={style.button} onClick={onHideCart}>
+              Close
+            </button>
+          </div>
+        </>
+      )}
+      {error.trim().length > 0 && <p>{error}</p>}
     </Modal>
   );
 };
