@@ -1,10 +1,12 @@
-import Counter from './components/Counter';
-
+import { useSelector } from "react-redux";
+import Counter from "./components/Counter";
 
 function App() {
-  return (
-    <Counter />
-  );
+  const state = useSelector((state) => state);
+
+  console.log(state);
+
+  return <Counter />;
 }
 
 export default App;
