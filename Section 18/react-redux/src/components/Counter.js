@@ -2,7 +2,7 @@ import { Component } from "react";
 import classes from "./Counter.module.css";
 // import { useDispatch, useSelector } from "react-redux";
 import { connect } from "react-redux";
-import { DECREMENT, INCREMENT } from "../variables";
+import { DECREMENT, INCREMENT, SHOW_COUNTER } from "../variables";
 
 // const countState = (state) => state;
 
@@ -58,15 +58,19 @@ class Counter extends Component {
     this.props.decrement();
   }
 
-  toggleCounterHandler = () => {};
+  toggleCounterHandler = () => {
+    this.props.toggleCounter(!this.props.showCounter);
+  };
 
   render() {
     return (
       <main className={classes.counter}>
         <h1>Redux Counter</h1>
-        <div className={classes.value}>
-          -- COUNTER VALUE: {this.props.count} --
-        </div>
+        {this.props.showCounter && (
+          <div className={classes.value}>
+            -- COUNTER VALUE: {this.props.count} --
+          </div>
+        )}
         <div>
           {this.buttons.map(({ label, action, number }, i) => (
             <button onClick={action.bind(this, number)} key={i}>
@@ -87,6 +91,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: INCREMENT, payload: number });
   },
   decrement: (number = 1) => dispatch({ type: DECREMENT, payload: number }),
+  toggleCounter: (boolVal = true) =>
+    dispatch({ type: SHOW_COUNTER, payload: boolVal }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Counter);
