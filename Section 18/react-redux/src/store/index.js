@@ -1,7 +1,5 @@
 import { legacy_createStore } from "redux";
-
-const INCREMENT = "increment";
-const DECREMENT = "decrement";
+import { DECREMENT, INCREMENT } from "../variables";
 
 const initialState = {
   count: 0,
