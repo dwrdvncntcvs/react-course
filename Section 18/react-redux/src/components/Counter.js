@@ -43,10 +43,15 @@ class Counter extends Component {
   buttons = [
     { label: "Increment", action: this.incrementAction },
     { label: "Decrement", action: this.decrementAction },
+    { label: "Increment", action: this.incrementByNumAction, number: 5 },
   ];
 
   incrementAction() {
     this.props.increment();
+  }
+
+  incrementByNumAction(number) {
+    this.props.increment(number);
   }
 
   decrementAction() {
@@ -63,9 +68,9 @@ class Counter extends Component {
           -- COUNTER VALUE: {this.props.count} --
         </div>
         <div>
-          {this.buttons.map(({ label, action }, i) => (
-            <button onClick={action.bind(this)} key={i}>
-              {label}
+          {this.buttons.map(({ label, action, number }, i) => (
+            <button onClick={action.bind(this, number)} key={i}>
+              {label} {number}
             </button>
           ))}
         </div>
@@ -78,11 +83,10 @@ class Counter extends Component {
 const mapStateToProps = (state) => ({ ...state });
 
 const mapDispatchToProps = (dispatch) => ({
-  increment: () => {
-    console.log("Dispatch");
-    dispatch({ type: INCREMENT });
+  increment: (number = 1) => {
+    dispatch({ type: INCREMENT, payload: number });
   },
-  decrement: () => dispatch({ type: DECREMENT }),
+  decrement: (number = 1) => dispatch({ type: DECREMENT, payload: number }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Counter);
