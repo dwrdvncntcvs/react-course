@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 const initialState = {
   cartItems: [],
   totalQuantity: 0,
+  changed: false,
 };
 
 const cartSlice = createSlice({
@@ -30,10 +31,12 @@ const cartSlice = createSlice({
         });
 
         state.totalQuantity += 1;
+        state.changed = true;
       } else {
         existingItem.quantity = existingItem.quantity + 1;
         existingItem.totalPrice += price;
         state.totalQuantity = state.totalQuantity + 1;
+        state.changed = true;
       }
     },
     removeItem: (state, action) => {

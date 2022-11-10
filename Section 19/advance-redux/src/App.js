@@ -7,11 +7,11 @@ import Notification from "./components/UI/Notification";
 import { getCartData, sendCartData } from "./store/cartActions";
 import { useUIState } from "./store/uiSlice";
 
-let isInitial = true;
-
 function App() {
   const { cartIsVisible, notification } = useUIState();
-  const { cartItems, totalQuantity } = useSelector((state) => state.cartState);
+  const { cartItems, totalQuantity, changed } = useSelector(
+    (state) => state.cartState
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,13 +19,8 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isInitial) {
-      isInitial = false;
-      return;
-    }
-
-    dispatch(sendCartData({ cartItems, totalQuantity }));
-  }, [cartItems, totalQuantity, dispatch]);
+    if (changed) dispatch(sendCartData({ cartItems, totalQuantity }));
+  }, [cartItems, totalQuantity, dispatch, changed]);
 
   return (
     <>
