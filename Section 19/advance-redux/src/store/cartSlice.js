@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
+import { BASE_URL } from "../variable";
+import { setNotification } from "./uiSlice";
 
 const initialState = {
   cartItems: [],
@@ -51,3 +53,44 @@ export default cartSlice.reducer;
 export const { addItem, removeItem } = cartSlice.actions;
 
 export const useCartState = () => useSelector((state) => state.cartState);
+
+export const sendCartData = (cartItems) => {
+  return async (dispatch) => {
+    dispatch(
+      setNotification({
+        title: "Sending",
+        message: "Sending cart data",
+        status: "pending",
+      })
+    );
+
+    const sendRequest = async () => {
+      const response = await fetch(`${BASE_URL}/cart.json`, {
+        method: "PUT",
+        body: JSON.stringify(cartItems),
+      });
+
+      if (!response.ok) throw new Error("Sending cart data failed");
+    };
+
+    try {
+      await sendRequest();
+
+      dispatch(
+        setNotification({
+          title: "Success",
+          message: "Cart data sent successfully",
+          status: "success",
+        })
+      );
+    } catch (e) {
+      dispatch(
+        setNotification({
+          title: "Error!",
+          message: "Sending cart data failed",
+          status: "error",
+        })
+      );
+    }
+  };
+};
