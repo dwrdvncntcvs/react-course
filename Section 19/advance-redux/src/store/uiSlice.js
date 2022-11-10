@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 const initialState = {
   cartIsVisible: false,
+  notification: null,
 };
 
 const uiSlice = createSlice({
@@ -12,11 +13,15 @@ const uiSlice = createSlice({
     toggle: (state, action) => {
       return { ...state, cartIsVisible: !state.cartIsVisible };
     },
+    setNotification: (state, action) => {
+      const { status, title, message } = action.payload;
+      state.notification = { status, title, message };
+    },
   },
 });
 
 export default uiSlice.reducer;
 
-export const { toggle } = uiSlice.actions;
+export const { toggle, setNotification } = uiSlice.actions;
 
 export const useUIState = () => useSelector((state) => state.uiState);
