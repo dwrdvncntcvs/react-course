@@ -19,7 +19,7 @@ export const getCartData = () => async (dispatch) => {
     dispatch(
       replaceCart({
         totalQuantity: cartData.totalQuantity,
-        cartItems: cartData.cartItems,
+        cartItems: cartData.cartItems || [],
       })
     );
   } catch (e) {

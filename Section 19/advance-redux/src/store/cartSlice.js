@@ -50,6 +50,7 @@ const cartSlice = createSlice({
         existingItem.totalPrice -= existingItem.price;
       }
       state.totalQuantity -= 1;
+      state.changed = true;
     },
   },
 });
