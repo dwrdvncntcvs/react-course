@@ -8,7 +8,9 @@ function App() {
     <>
       <MainHeader />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />}>
+          <Route path="new-user" element={<p>Hello?</p>} />
+        </Route>
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<ProductDetails />} />
       </Routes>
