@@ -1,10 +1,18 @@
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
+import { MainHeader } from "./components";
+import { Home, ProductDetails, Products } from "./pages";
 
 function App() {
   return (
-    <div>
-      <h1>Hello World</h1>
-    </div>
+    <>
+      <MainHeader />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
+      </Routes>
+    </>
   );
 }
 
