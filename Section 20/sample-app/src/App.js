@@ -1,6 +1,7 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, Link } from "react-router-dom";
 import Comments from "./components/comments/Comments";
 import Layout from "./components/layout/Layout";
+import CommentsLink from "./components/Links/CommentsLink";
 import NewQuote from "./pages/NewQuote";
 import NotFound from "./pages/NotFound";
 import QuoteDetails from "./pages/QuoteDetails";
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/quotes" index element={<Quotes />} />
         <Route path="/quotes/:quoteId/" element={<QuoteDetails />}>
+          <Route path="" element={<CommentsLink />} />
           <Route path="comments" element={<Comments />} />
         </Route>
         <Route path="/new-quote" element={<NewQuote />} />
