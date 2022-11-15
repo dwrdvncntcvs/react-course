@@ -1,15 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams, Outlet } from "react-router-dom";
+import { getSingleQuote } from "../api";
 import HighlightedQuote from "../components/quotes/HighlightedQuote";
 import NoQuotesFound from "../components/quotes/NoQuotesFound";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 import { DUMMY_QUOTES } from "../data/quotes";
+import useHttp from "../hooks/use-http";
 
 export default function QuoteDetails() {
   const { quoteId } = useParams();
+  const {
+    sendRequest,
+    status,
+    data: quote,
+    error,
+  } = useHttp(getSingleQuote, true);
 
-  const quote = DUMMY_QUOTES.find((quote) => quote.id === quoteId);
+  useEffect(() => {
+    sendRequest(quoteId);
+  }, [sendRequest, quoteId]);
 
-  if (!quote) return <NoQuotesFound />;
+  if (status === "pending")
+    return (
+      <div className="centered">
+        <LoadingSpinner />
+      </div>
+    );
+
+  if (status === "error") return <p className="centered">{error}</p>;
+
+  if (!quote.text) return <NoQuotesFound />;
 
   return (
     <div>
