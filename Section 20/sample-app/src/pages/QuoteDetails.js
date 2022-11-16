@@ -4,7 +4,6 @@ import { getSingleQuote } from "../api";
 import HighlightedQuote from "../components/quotes/HighlightedQuote";
 import NoQuotesFound from "../components/quotes/NoQuotesFound";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
-import { DUMMY_QUOTES } from "../data/quotes";
 import useHttp from "../hooks/use-http";
 
 export default function QuoteDetails() {
