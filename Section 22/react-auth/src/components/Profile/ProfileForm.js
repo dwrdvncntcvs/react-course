@@ -34,7 +34,7 @@ const ProfileForm = () => {
       }
 
       const newData = await response.json();
-      console.log(data);
+      console.log(newData);
     } catch (err) {
       alert(err.message);
     }
