@@ -10,15 +10,18 @@ const initialContext = {
 const AuthContext = createContext(initialContext);
 
 const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(null);
+  const initialToken = localStorage.getItem("auth_token") || null;
+  const [token, setToken] = useState(initialToken);
 
   const userIsLoggedIn = !!token;
 
   const login = (token) => {
+    localStorage.setItem("auth_token", token);
     setToken(token);
   };
 
   const logout = () => {
+    localStorage.removeItem("auth_token");
     setToken(null);
   };
 
