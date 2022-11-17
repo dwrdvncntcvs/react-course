@@ -4,6 +4,8 @@ import { FIREBASE_API_KEY } from "../../utils/variables";
 import classes from "./AuthForm.module.css";
 
 const AuthForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -17,6 +19,8 @@ const AuthForm = () => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
+
+    setIsLoading(true);
 
     if (isLogin) {
     } else {
@@ -36,12 +40,18 @@ const AuthForm = () => {
           },
         }
       );
+      const data = await responseData.json();
 
       if (!responseData.ok) {
+        let errorMessage = "Authentication failed!";
+
+        alert(errorMessage);
+        setIsLoading(false);
+        return;
       }
 
-      const data = await responseData.json();
       console.log("Data: ", data);
+      setIsLoading(false);
     }
   };
 
@@ -58,7 +68,10 @@ const AuthForm = () => {
           <input type="password" id="password" ref={passwordRef} required />
         </div>
         <div className={classes.actions}>
-          <button>{isLogin ? "Login" : "Create Account"}</button>
+          {!isLoading && (
+            <button>{isLogin ? "Login" : "Create Account"}</button>
+          )}
+          {isLoading && <p>Sending Request...</p>}
           <button
             type="button"
             className={classes.toggle}
