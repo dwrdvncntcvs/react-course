@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { FIREBASE_API_KEY } from "../../utils/variables";
 
@@ -7,6 +8,7 @@ import classes from "./AuthForm.module.css";
 const AuthForm = () => {
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory();
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -50,6 +52,7 @@ const AuthForm = () => {
       }
 
       login(data.idToken);
+      history.replace("/");
       setIsLoading(false);
     } catch (err) {
       alert(err.message);

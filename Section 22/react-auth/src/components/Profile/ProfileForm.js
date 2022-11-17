@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useHistory } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { FIREBASE_API_KEY } from "../../utils/variables";
 import classes from "./ProfileForm.module.css";
@@ -6,6 +7,7 @@ import classes from "./ProfileForm.module.css";
 const ProfileForm = () => {
   const { token } = useAuth();
   const passwordRef = useRef();
+  const history = useHistory();
 
   const submitData = async (e) => {
     e.preventDefault();
@@ -35,6 +37,7 @@ const ProfileForm = () => {
 
       const newData = await response.json();
       console.log(newData);
+      history.replace("/");
     } catch (err) {
       alert(err.message);
     }
