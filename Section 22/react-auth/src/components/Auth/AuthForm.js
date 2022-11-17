@@ -5,7 +5,7 @@ import { FIREBASE_API_KEY } from "../../utils/variables";
 import classes from "./AuthForm.module.css";
 
 const AuthForm = () => {
-  const { isLoggedIn, login, logout } = useAuth();
+  const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const emailRef = useRef();
