@@ -13,10 +13,7 @@ const MainNavigation = () => {
       </Link>
       <nav>
         <ul>
-          <li>
-            <Link to="/auth">Login</Link>
-          </li>
-          {isLoggedIn && (
+          {isLoggedIn ? (
             <>
               <li>
                 <Link to="/profile">Profile</Link>
@@ -25,6 +22,10 @@ const MainNavigation = () => {
                 <button onClick={logout}>Logout</button>
               </li>
             </>
+          ) : (
+            <li>
+              <Link to="/auth">Login</Link>
+            </li>
           )}
         </ul>
       </nav>
