@@ -21,36 +21,36 @@ const AuthForm = () => {
     const password = passwordRef.current.value;
 
     setIsLoading(true);
+    let url = `https://identitytoolkit.googleapis.com/v1/accounts:${
+      isLogin ? "signInWithPassword" : "signUp"
+    }?key=${FIREBASE_API_KEY}`;
 
-    if (isLogin) {
-    } else {
-      const authData = {
-        email,
-        password,
-        returnSecureToken: true,
-      };
+    const authData = {
+      email,
+      password,
+      returnSecureToken: true,
+    };
 
-      const responseData = await fetch(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`,
-        {
-          method: "POST",
-          body: JSON.stringify(authData),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+    try {
+      const responseData = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(authData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const data = await responseData.json();
 
       if (!responseData.ok) {
         let errorMessage = "Authentication failed!";
 
-        alert(errorMessage);
-        setIsLoading(false);
-        return;
+        throw new Error(errorMessage);
       }
 
       console.log("Data: ", data);
+      setIsLoading(false);
+    } catch (err) {
+      alert(err.message);
       setIsLoading(false);
     }
   };
