@@ -1,9 +1,11 @@
 import { useRef, useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 import { FIREBASE_API_KEY } from "../../utils/variables";
 
 import classes from "./AuthForm.module.css";
 
 const AuthForm = () => {
+  const { isLoggedIn, login, logout } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const emailRef = useRef();
@@ -47,7 +49,7 @@ const AuthForm = () => {
         throw new Error(errorMessage);
       }
 
-      console.log("Data: ", data);
+      login(data.idToken);
       setIsLoading(false);
     } catch (err) {
       alert(err.message);
