@@ -40,6 +40,7 @@ export function getStaticProps() {
     props: {
       meetups: DUMMY_LIST,
     },
+    revalidate: 1,
   };
 }
 
