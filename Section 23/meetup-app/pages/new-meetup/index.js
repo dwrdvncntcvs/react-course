@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head";
 import NewMeetupForm from "../../components/meetups/NewMeetupForm";
 import { useRouter } from "next/router";
 
@@ -22,9 +23,16 @@ const NewMeetUp = () => {
   };
 
   return (
-    <div>
+    <>
+      <Head>
+        <title>Add a New Meet Up</title>
+        <meta
+          name="description"
+          content="Add your own meetups and create amazing networking opportunities"
+        ></meta>
+      </Head>
       <NewMeetupForm onAddMeetup={addNewMeetup} />
-    </div>
+    </>
   );
 };
 

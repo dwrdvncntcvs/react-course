@@ -1,10 +1,19 @@
 import React from "react";
+import Head from "next/head";
 import MeetupList from "../components/meetups/MeetupList";
 import MeetUps from "../database/mongodb/models/MeetUp";
 import dbConnect from "../database/mongodb/config";
 
 const HomePage = ({ meetups }) => {
-  return <MeetupList meetups={meetups} />;
+  return (
+    <>
+      <Head>
+        <title>React Meet Ups</title>
+        <meta name="description" content="Browse new meet ups"></meta>
+      </Head>
+      <MeetupList meetups={meetups} />
+    </>
+  );
 };
 
 export async function getStaticProps() {

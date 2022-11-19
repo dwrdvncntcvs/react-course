@@ -1,16 +1,24 @@
 import React from "react";
+import Head from "next/head";
 import MeetUpDetails from "../../components/meetups/MeetUpDetails";
 import dbConnect from "../../database/mongodb/config";
 import MeetUp from "../../database/mongodb/models/MeetUp";
 
 const MeetUpDetailsPage = ({ image, title, address, description }) => {
   return (
-    <MeetUpDetails
-      image={image}
-      title={title}
-      address={address}
-      description={description}
-    />
+    <>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={description}></meta>
+        <meta name="image" content={image}></meta>
+      </Head>
+      <MeetUpDetails
+        image={image}
+        title={title}
+        address={address}
+        description={description}
+      />
+    </>
   );
 };
 
