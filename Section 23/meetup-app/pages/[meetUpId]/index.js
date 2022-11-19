@@ -1,5 +1,7 @@
 import React from "react";
 import MeetUpDetails from "../../components/meetups/MeetUpDetails";
+import dbConnect from "../../database/mongodb/config";
+import MeetUp from "../../database/mongodb/models/MeetUp";
 
 const MeetUpDetailsPage = ({ image, title, address, description }) => {
   return (
@@ -13,34 +15,37 @@ const MeetUpDetailsPage = ({ image, title, address, description }) => {
 };
 
 export async function getStaticPaths() {
+  await dbConnect();
+
+  const meetups = await MeetUp.find();
+  const paths = meetups.map(({ _id }) => ({
+    params: {
+      meetUpId: _id.toString(),
+    },
+  }));
+
   return {
     fallback: false,
-    paths: [
-      {
-        params: {
-          meetUpId: "m1",
-        },
-      },
-      {
-        params: {
-          meetUpId: "m2",
-        },
-      },
-    ],
+    paths,
   };
 }
 
+const cleanData = (data) => {
+  const document = data._doc;
+  const id = data._id.toString();
+  delete document._id;
+  return { ...document, id };
+};
+
 export async function getStaticProps(context) {
   const { meetUpId } = context.params;
-  console.log("Meet Up ID: ", meetUpId);
+
+  const meetup = await MeetUp.findById(meetUpId);
+  const cleanMeetUpData = cleanData(meetup);
 
   return {
     props: {
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1280px-Image_created_with_a_mobile_phone.png",
-      title: "A first meetup",
-      address: "Some Address",
-      description: "This is a first meet up",
+      ...cleanMeetUpData,
     },
   };
 }

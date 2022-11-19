@@ -7,4 +7,6 @@ const meetupSchema = new Schema({
   description: String,
 });
 
-export default models.MeetUp || model("MeetUp", meetupSchema);
+const MeetUp = models.MeetUp || model("MeetUp", meetupSchema);
+
+export default MeetUp;
