@@ -4,7 +4,6 @@ import "./Modal.css";
 
 const modal = ({ show, onClose }) => {
   const cssClasses = ["Modal", show ? "ModalOpen" : "ModalClose"];
-  console.log(cssClasses);
 
   return (
     <div className={cssClasses.join(" ")}>
