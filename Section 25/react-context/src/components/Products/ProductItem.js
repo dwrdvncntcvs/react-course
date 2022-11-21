@@ -6,8 +6,10 @@ import { useStore } from "../../hooks/store";
 import Card from "../UI/Card";
 import "./ProductItem.css";
 
-const ProductItem = (props) => {
-  const dispatch = useStore()[1];
+const ProductItem = React.memo((props) => {
+  console.log("Rerender");
+
+  const dispatch = useStore(false)[1];
   // const { toggleFavorite } = useProducts();
 
   const toggleFavHandler = () => {
@@ -29,6 +31,6 @@ const ProductItem = (props) => {
       </div>
     </Card>
   );
-};
+});
 
 export default ProductItem;
