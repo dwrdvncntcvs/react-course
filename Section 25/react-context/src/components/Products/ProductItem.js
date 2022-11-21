@@ -1,14 +1,18 @@
 import React from "react";
-import { useProducts } from "../../hooks/productsHooks";
+// import { useStore } from "react-redux";
+// import { useProducts } from "../../hooks/productsHooks";
+import { useStore } from "../../hooks/store";
 
 import Card from "../UI/Card";
 import "./ProductItem.css";
 
 const ProductItem = (props) => {
-  const { toggleFavorite } = useProducts();
+  const dispatch = useStore()[1];
+  // const { toggleFavorite } = useProducts();
 
   const toggleFavHandler = () => {
-    toggleFavorite(props.id);
+    // toggleFavorite(props.id);
+    dispatch("toggleFavorite", props.id);
   };
 
   return (
