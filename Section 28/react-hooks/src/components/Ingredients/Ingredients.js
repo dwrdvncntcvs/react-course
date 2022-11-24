@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { BASE_URL } from "../../variables";
 
 import IngredientForm from "./IngredientForm";
@@ -7,23 +7,6 @@ import Search from "./Search";
 
 function Ingredients() {
   const [ingredients, setIngredients] = useState([]);
-
-  const getAllIngredients = useCallback(async () => {
-    const result = await fetch(`${BASE_URL}/ingredients.json`);
-    const data = await result.json();
-
-    const loadedIg = [];
-    for (const key in data) {
-      const dataObj = { id: key, ...data[key] };
-      loadedIg.push(dataObj);
-    }
-
-    setIngredients(loadedIg);
-  }, []);
-
-  useEffect(() => {
-    getAllIngredients();
-  }, [getAllIngredients]);
 
   const removeIngredient = (id) => {
     setIngredients((prev) => prev.filter((ig) => ig.id !== id));
