@@ -8,7 +8,11 @@ import Search from "./Search";
 function Ingredients() {
   const [ingredients, setIngredients] = useState([]);
 
-  const removeIngredient = (id) => {
+  const removeIngredient = async (id) => {
+    await fetch(`${BASE_URL}/ingredients/${id}.json`, {
+      method: "DELETE",
+    });
+
     setIngredients((prev) => prev.filter((ig) => ig.id !== id));
   };
 
