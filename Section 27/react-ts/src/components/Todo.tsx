@@ -1,5 +1,5 @@
 import React, { FC, PropsWithChildren } from "react";
-import { Todo as TodoInterface } from "../interfaces/todo";
+import { Todo as TodoInterface } from "../models/todo";
 
 interface TodoProps {
   todo: TodoInterface[];

@@ -1,6 +1,6 @@
 import React from "react";
 import Todo from "./components/Todo";
-import { Todo as TodoInterface } from "./interfaces/todo";
+import { Todo as TodoInterface } from "./models/todo";
 
 const DUMMY_DATA: TodoInterface[] = [];
 
