@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 
 import Card from "../UI/Card";
 import "./IngredientForm.css";
 
-const IngredientForm = React.memo(() => {
+const IngredientForm = ({ onAddIngredient }) => {
   const [inputData, setInputData] = useState({ title: "", amount: "" });
 
   const handleChange = (e) => {
@@ -15,9 +15,13 @@ const IngredientForm = React.memo(() => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    // ...
 
-    console.table(inputData);
+    const data = {
+      id: Math.random().toString(),
+      ...inputData
+    };
+
+    onAddIngredient(data);
   };
 
   return (
@@ -51,6 +55,6 @@ const IngredientForm = React.memo(() => {
       </Card>
     </section>
   );
-});
+};
 
-export default IngredientForm;
+export default memo(IngredientForm);
