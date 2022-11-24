@@ -12,11 +12,15 @@ const App = () => {
     setTodos((prev) => [...prev, createTodo(text)]);
   };
 
+  const removeTodo = (id: string) => {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  };
+
   return (
-    <div>
+    <>
       <NewTodo onAddTodo={addNewTodo} />
-      <Todos todo={todos} />
-    </div>
+      <Todos todo={todos} onRemoveTodo={removeTodo} />
+    </>
   );
 };
 

@@ -5,13 +5,18 @@ import classes from "./Todos.module.css";
 
 interface TodoProps {
   todo: Todo[];
+  onRemoveTodo: (id: string) => void;
 }
 
-const Todos: FC<TodoProps & PropsWithChildren> = ({ todo }) => {
+const Todos: FC<TodoProps & PropsWithChildren> = ({ todo, onRemoveTodo }) => {
   return (
     <ul className={classes.todos}>
-      {todo.map(({ id, text }) => (
-        <TodoItem text={text} id={id} key={id} />
+      {todo.map((todo) => (
+        <TodoItem
+          todo={todo}
+          key={todo.id}
+          onRemoveItem={onRemoveTodo.bind(null, todo.id)}
+        />
       ))}
     </ul>
   );
