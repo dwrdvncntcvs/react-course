@@ -43,12 +43,16 @@ function Ingredients() {
     setIngredients((prev) => [...prev, { id: data.name, ...ingredient }]);
   };
 
+  const filterIngredient = useCallback((filterIngredients) => {
+    setIngredients(filterIngredients);
+  }, []);
+
   return (
     <div className="App">
       <IngredientForm onAddIngredient={addNewIngredient} />
 
       <section>
-        <Search />
+        <Search onLoadIngredients={filterIngredient} />
         <IngredientList
           ingredients={ingredients}
           onRemoveItem={removeIngredient}
