@@ -16,12 +16,11 @@ const IngredientForm = ({ onAddIngredient }) => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    const data = {
-      id: Math.random().toString(),
-      ...inputData
-    };
+    for (let data in inputData) {
+      if (inputData[data].trim() === "") return;
+    }
 
-    onAddIngredient(data);
+    onAddIngredient(inputData);
   };
 
   return (
