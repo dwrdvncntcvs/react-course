@@ -1,4 +1,13 @@
-export type Todo = {
+import uuid from "react-uuid";
+
+class Todo {
   id: string;
-  value: string;
-};
+  text: string;
+
+  constructor(text: string) {
+    this.id = uuid();
+    this.text = text;
+  }
+}
+
+export default Todo;
