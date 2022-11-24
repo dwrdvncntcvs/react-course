@@ -1,11 +1,9 @@
 import React, { FC, FormEvent, useRef } from "react";
+import { useTodo } from "../hooks/useTodo";
 import classes from "./NewTodo.module.css";
 
-interface NewTodoProps {
-  onAddTodo: (text: string) => void;
-}
-
-const NewTodo: FC<NewTodoProps> = ({ onAddTodo }) => {
+const NewTodo: FC = () => {
+  const { addTodo } = useTodo();
   const todoTextInput = useRef<HTMLInputElement>(null);
 
   const submitHandler = (e: FormEvent) => {
@@ -14,7 +12,7 @@ const NewTodo: FC<NewTodoProps> = ({ onAddTodo }) => {
     const text = todoTextInput.current!.value;
     if (text.trim() === "") return;
 
-    onAddTodo(text);
+    addTodo(text);
   };
 
   return (
