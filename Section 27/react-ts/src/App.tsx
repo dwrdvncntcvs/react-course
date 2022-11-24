@@ -5,13 +5,8 @@ import Todo from "./models/todo";
 
 const createTodo = (todo: string) => new Todo(todo);
 
-const DUMMY_DATA: Todo[] = [
-  createTodo("Learn React"),
-  createTodo("React TypeScript"),
-];
-
 const App = () => {
-  const [todos, setTodos] = useState<Todo[]>(DUMMY_DATA);
+  const [todos, setTodos] = useState<Todo[]>([]);
 
   const addNewTodo = (text: string) => {
     setTodos((prev) => [...prev, createTodo(text)]);
@@ -19,9 +14,8 @@ const App = () => {
 
   return (
     <div>
-      <h1>Todo App</h1>
-      <Todos todo={todos} />
       <NewTodo onAddTodo={addNewTodo} />
+      <Todos todo={todos} />
     </div>
   );
 };
