@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState, useRef } from "react";
 import { BASE_URL } from "../../variables";
 
 import Card from "../UI/Card";
@@ -6,6 +6,7 @@ import "./Search.css";
 
 const Search = ({ onLoadIngredients }) => {
   const [filter, setFilter] = useState("");
+  const inputRef = useRef();
 
   const getIngredient = useCallback(async () => {
     const query =
@@ -23,8 +24,15 @@ const Search = ({ onLoadIngredients }) => {
   }, [onLoadIngredients, filter]);
 
   useEffect(() => {
-    getIngredient();
-  }, [getIngredient]);
+    if (filter.trim() === "") getIngredient();
+
+    const timer = setTimeout(() => {
+      if (filter === inputRef.current.value) getIngredient();
+    }, 500);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [getIngredient, filter]);
 
   return (
     <section className="search">
@@ -35,6 +43,7 @@ const Search = ({ onLoadIngredients }) => {
             type="text"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
+            ref={inputRef}
           />
         </div>
       </Card>
