@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useReducer } from "react";
+import React, { useCallback, useReducer } from "react";
 import useHttp from "../../hooks/useHttp";
 import { BASE_URL } from "../../variables";
 import ErrorModal from "../UI/ErrorModal";
