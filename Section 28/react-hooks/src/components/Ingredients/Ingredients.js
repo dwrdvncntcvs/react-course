@@ -51,16 +51,6 @@ function Ingredients() {
     igDispatch({ type: "SET", payload: filterIngredients });
   }, []);
 
-  const ingredientList = useMemo(
-    () => (
-      <IngredientList
-        ingredients={ingredients}
-        onRemoveItem={removeIngredient}
-      />
-    ),
-    [ingredients, removeIngredient]
-  );
-
   return (
     <div className="App">
       {http.error ? (
@@ -73,7 +63,10 @@ function Ingredients() {
 
       <section>
         <Search onLoadIngredients={filterIngredient} />
-        {ingredientList}
+        <IngredientList
+          ingredients={ingredients}
+          onRemoveItem={removeIngredient}
+        />
       </section>
     </div>
   );
