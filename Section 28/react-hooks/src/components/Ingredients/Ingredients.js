@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useReducer } from "react";
+import useHttp from "../../hooks/useHttp";
 import { BASE_URL } from "../../variables";
 import ErrorModal from "../UI/ErrorModal";
 import IngredientForm from "./IngredientForm";
@@ -18,63 +19,33 @@ const ingredientsReducer = (state, { type, payload }) => {
   }
 };
 
-const httpReducer = (state, { type, payload }) => {
-  switch (type) {
-    case "PENDING":
-      return { ...state, loading: true };
-    case "SUCCESS":
-      return { ...state, loading: false };
-    case "REJECTED":
-      return { loading: false, error: payload };
-    case "CLEAR":
-      return { loading: false, error: null };
-    default:
-      return state;
-  }
-};
-
 function Ingredients() {
   const [ingredients, igDispatch] = useReducer(ingredientsReducer, []);
-  const [http, httpDispatch] = useReducer(httpReducer, {
-    loading: false,
-    error: null,
-  });
+  const { http, sendRequest, clear } = useHttp();
 
-  const clearError = useCallback(() => httpDispatch({ type: "CLEAR" }), []);
+  const clearError = useCallback(() => clear(), [clear]);
 
-  const removeIngredient = useCallback(async (id) => {
-    try {
-      httpDispatch({ type: "PENDING" });
-      await fetch(`${BASE_URL}/ingredients/${id}.json`, {
-        method: "DELETE",
-      });
-      httpDispatch({ type: "SUCCESS" });
+  const removeIngredient = useCallback(
+    async (id) => {
+      await sendRequest(`${BASE_URL}/ingredients/${id}.json`, "DELETE");
 
       igDispatch({ type: "DELETE", payload: id });
-    } catch (err) {
-      httpDispatch({
-        type: "REJECTED",
-        payload: "Something went wrong while removing ingredient",
-      });
-    }
-  }, []);
+    },
+    [sendRequest]
+  );
 
-  const addNewIngredient = useCallback(async (ingredient) => {
-    httpDispatch({ type: "PENDING" });
+  const addNewIngredient = useCallback(
+    async (ingredient) => {
+      const data = await sendRequest(
+        `${BASE_URL}/ingredients.json`,
+        "POST",
+        JSON.stringify(ingredient)
+      );
 
-    const result = await fetch(`${BASE_URL}/ingredients.json`, {
-      method: "POST",
-      body: JSON.stringify(ingredient),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await result.json();
-    httpDispatch({ type: "SUCCESS" });
-
-    igDispatch({ type: "ADD", payload: { id: data.name, ...ingredient } });
-  }, []);
+      igDispatch({ type: "ADD", payload: { id: data.name, ...ingredient } });
+    },
+    [sendRequest]
+  );
 
   const filterIngredient = useCallback((filterIngredients) => {
     igDispatch({ type: "SET", payload: filterIngredients });
@@ -92,7 +63,7 @@ function Ingredients() {
 
   return (
     <div className="App">
-      {ingredients.error ? (
+      {http.error ? (
         <ErrorModal onClose={clearError}>{http.error}</ErrorModal>
       ) : null}
       <IngredientForm
