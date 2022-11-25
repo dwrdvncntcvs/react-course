@@ -1,5 +1,10 @@
 import { useCallback, useReducer } from "react";
 
+const initialState = {
+  loading: false,
+  error: null,
+};
+
 const httpReducer = (state, { type, payload }) => {
   switch (type) {
     case "PENDING":
@@ -9,17 +14,14 @@ const httpReducer = (state, { type, payload }) => {
     case "REJECTED":
       return { loading: false, error: payload };
     case "CLEAR":
-      return { loading: false, error: null };
+      return initialState;
     default:
       return state;
   }
 };
 
 const useHttp = () => {
-  const [state, dispatch] = useReducer(httpReducer, {
-    loading: false,
-    error: null,
-  });
+  const [state, dispatch] = useReducer(httpReducer, initialState);
 
   const clear = useCallback(() => dispatch({ type: "CLEAR" }), []);
 
