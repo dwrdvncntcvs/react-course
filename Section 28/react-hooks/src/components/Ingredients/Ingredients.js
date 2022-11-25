@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer, useState } from "react";
+import React, { useCallback, useReducer } from "react";
 import { BASE_URL } from "../../variables";
 import ErrorModal from "../UI/ErrorModal";
 import IngredientForm from "./IngredientForm";
