@@ -1,8 +1,10 @@
-import React from "react";
+import React, { memo } from "react";
 
 import "./IngredientList.css";
 
 const IngredientList = ({ ingredients, onRemoveItem }) => {
+  console.log("Rendering IngredientList");
+
   return (
     <section className="ingredient-list">
       <h2>Loaded Ingredients</h2>
@@ -18,4 +20,4 @@ const IngredientList = ({ ingredients, onRemoveItem }) => {
   );
 };
 
-export default IngredientList;
+export default memo(IngredientList);

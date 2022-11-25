@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from "react";
+import React, { useCallback, useMemo, useReducer } from "react";
 import { BASE_URL } from "../../variables";
 import ErrorModal from "../UI/ErrorModal";
 import IngredientForm from "./IngredientForm";
@@ -40,9 +40,9 @@ function Ingredients() {
     error: null,
   });
 
-  const clearError = () => httpDispatch({ type: "CLEAR" });
+  const clearError = useCallback(() => httpDispatch({ type: "CLEAR" }), []);
 
-  const removeIngredient = async (id) => {
+  const removeIngredient = useCallback(async (id) => {
     try {
       httpDispatch({ type: "PENDING" });
       await fetch(`${BASE_URL}/ingredients/${id}.json`, {
@@ -57,9 +57,9 @@ function Ingredients() {
         payload: "Something went wrong while removing ingredient",
       });
     }
-  };
+  }, []);
 
-  const addNewIngredient = async (ingredient) => {
+  const addNewIngredient = useCallback(async (ingredient) => {
     httpDispatch({ type: "PENDING" });
 
     const result = await fetch(`${BASE_URL}/ingredients.json`, {
@@ -74,11 +74,21 @@ function Ingredients() {
     httpDispatch({ type: "SUCCESS" });
 
     igDispatch({ type: "ADD", payload: { id: data.name, ...ingredient } });
-  };
+  }, []);
 
   const filterIngredient = useCallback((filterIngredients) => {
     igDispatch({ type: "SET", payload: filterIngredients });
   }, []);
+
+  const ingredientList = useMemo(
+    () => (
+      <IngredientList
+        ingredients={ingredients}
+        onRemoveItem={removeIngredient}
+      />
+    ),
+    [ingredients, removeIngredient]
+  );
 
   return (
     <div className="App">
@@ -92,10 +102,7 @@ function Ingredients() {
 
       <section>
         <Search onLoadIngredients={filterIngredient} />
-        <IngredientList
-          ingredients={ingredients}
-          onRemoveItem={removeIngredient}
-        />
+        {ingredientList}
       </section>
     </div>
   );
