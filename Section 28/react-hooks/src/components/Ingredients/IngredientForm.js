@@ -5,7 +5,6 @@ import "./IngredientForm.css";
 
 const IngredientForm = ({ onAddIngredient, loading }) => {
   const [inputData, setInputData] = useState({ title: "", amount: "" });
-  console.log("Rendering form...")
 
   const handleChange = (e) => {
     const name = e.target.name;
