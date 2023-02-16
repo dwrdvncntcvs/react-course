@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import css from "./MainNavigation.module.css";
 
 const MainNavigation = () => {
@@ -8,10 +8,21 @@ const MainNavigation = () => {
       <nav>
         <ul className={css.list}>
           <li>
-            <Link to="/">Home</Link>
+            <NavLink
+              className={({ isActive }) => (isActive ? css.active : "")}
+              to="/"
+              end
+            >
+              Home
+            </NavLink>
           </li>
           <li>
-            <Link to="/products">Products</Link>
+            <NavLink
+              className={({ isActive }) => (isActive ? css.active : "")}
+              to="/products"
+            >
+              Products
+            </NavLink>
           </li>
         </ul>
       </nav>
